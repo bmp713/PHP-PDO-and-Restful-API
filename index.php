@@ -20,84 +20,73 @@
                 <h1>PHP | PDO and Restful API</h1><br>
                 <h3>Log in to database</h3><br><br>
                 <form action="index.php" method="POST" id="form_login">
+                    User<br><input type="text" name="user" value="root" class="input-box"><br>
+                    Password<br><input type="password" name="password" value="Welcome123" class="input-box"><br><br>
 
-                    User<br><br><input type="text" name="user" placeholder="User Name" value="root" class="input-box"><br><br>
-                    Password<br><input type="password" name="password" placeholder="Password" value="Welcome123" class="input-box"><br><br><br>
-                    First<br><input name"first" placeholder="First Name" class="input-box"><br><br>
-                    Last<br><input name"last" placeholder="Last Name" class="input-box"><br><br>
-                    User Name<br><input name"uid" placeholder="User Name" class="input-box"><br><br>
-                    Age<br><input name"age" placeholder="First Name" class="input-box"><br><br>
-
+                    First<br><input type="text" name="first" value="First" class="input-box"><br>
+                    Last<br><input type="text" name="last" value="Last" class="input-box"><br>
+                    User Name<br><input type="text" name="uid" value="User" class="input-box"><br>
+                    Age<br><input type="text" name="age" value="35" class="input-box"><br><br>
                     <button type="submit" class="main-button">Log In</button>
    				</form><br>
                 
             </div>	
             <div id="output">
                 <?php
-                    if( $_POST['user'] ){
-                        $db_file = 'db.sql';                
-                        $db_user = $_POST['user'];
-                        $db_password = $_POST['password'];
-                        
-                        $host = 'localhost';
-                        $db_name = 'PDO_1';
-                        $username = $_POST['user'];
-                        $password = $_POST['password'];
 
-                        // Dump $_POST array
-                        foreach( $_POST as $post ){
-                            echo '$_POST = '.$post.'<br>';
-                        }
+                    $db_file = 'db.sql';                
+                    $host = 'localhost';
+                    $db_name = 'PDO_1';
+                    $username = $_POST['user'];
+                    $password = $_POST['password'];
 
-                        try{ 
-                            $conn = new PDO('mysql:host='.$host.';dbname='.$db_name, $username, $password);
-                            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    $first = $_POST['first'];
+                    $last = $_POST['last'];
+                    $uid = $_POST['uid'];
+                    $age = $_POST['age'];
+
+                    foreach( $_POST as $post ){
+                        echo 'POST = '.$post.'<br>';
+                    }
+                    // Create database from SQL file
+                    /*if( file_exists( $db_file ) ){
+                        $sql = file( $db_file );
+                        foreach( $sql as $line ){
+                            echo $line.'<br>';
                         }
-                        catch( PDOException $error ){
-                            echo 'Connection Error: ' . $error->getMessage();
-                        }
+                        $cmd = 'mysql -u'.$db_user.' -p'.$db_password.' <'.$db_file;
+                        echo '<br>'.$cmd.'<br><br>';
+                        echo exec( $cmd );
+                    }*/
+
+                    // CONNECTION
+                    try{ 
+                        $conn = new PDO('mysql:host='.$host.';dbname='.$db_name, $username, $password);
+                        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                        printf("<br>%s logged in with %s<br>", $username, $password);
+                    }
+                    catch( PDOException $error ){
+                        echo 'Connection Error: ' . $error->getMessage();
+                    }
+                    $conn = null;
+
+                    // CREATE RECORD
+                    try{ 
+                        $conn = new PDO('mysql:host='.$host.';dbname='.$db_name, $username, $password);
+                        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                         printf("<br>%s logged in with %s<br>", $username, $password);
 
-
-                        // Create database from SQL file
-                        if( file_exists( $db_file ) ){
-                            $sql = file( $db_file );
-                            foreach( $sql as $line ){
-                                echo $line.'<br>';
-                            }
-                            $cmd = 'mysql -u'.$db_user.' -p'.$db_password.' <'.$db_file;
-                            echo '<br>'.$cmd.'<br><br>';
-                            echo exec( $cmd );
-                        }
-
-
-                        // CREATE new user record from POST request
-                        // Create query
-                                       
-                        $first = $_POST['first'];
-                        $last = $_POST['last'];
-                        $uid = $_POST['uid'];
-                        $age = $_POST['age'];
-
                         $query = "INSERT INTO users_1 (first, last, uid, age) 
-                                  VALUES ($first, $last, $uid, $age);";
-
-                        // Prepare statement
-                        $stmt = $conn->prepare( $query );
-
-                        // Bind data
-                        $stmt->bindParam(':title', $this->title);
-                        $stmt->bindParam(':body', $this->body);
-                        $stmt->bindParam(':author', $this->author);
-                        $stmt->bindParam(':category_id', $this->category_id);
-                        // Execute query
-                        if($stmt->execute()) {
-                            return true;
-                        }
+                            VALUES ('$first', '$last', '$uid', $age);";
                         
-                        
-
+                        $conn->exec( $query );
+                        echo "Record created successfully";
                     }
+                    catch(PDOException $error){
+                        echo $sql . "<br>" . $error->getMessage();
+                    }
+                    $conn = null;
+                                  
                 ?>
             </div>
             
