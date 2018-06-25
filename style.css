@@ -63,11 +63,9 @@ a{ cursor: pointer; text-decoration: none; }
         background: rgba(50, 10, 10, 0.8);
     }
         .main-button{
-            position: relative;
             margin: 50px auto 0 auto;
 	    	height: 35px;
             width: 20%;
-               
     		cursor: pointer;	
 	    	color: rgb(150, 150, 150);
     		font-family: Sans-serif, Times; 
@@ -82,7 +80,7 @@ a{ cursor: pointer; text-decoration: none; }
 		}
 		.input-box{
     		height: 25px;
-   			width: 15%;
+   			width: 25%;
 		}
 		.login{
 			position: relative;
