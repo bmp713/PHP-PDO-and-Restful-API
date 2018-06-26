@@ -27,12 +27,9 @@
                     Age<br><input type="text" name="age" value="35" class="input-box"><br><br>
                     <button type="submit" class="main-button">Log In</button>
    				</form><br>
-                
             </div>	
-
             <div id="output">
                 <?php
-
                     $db_file = 'db.sql';                
                     $host = 'localhost';
                     $db_name = 'PDO_1';
@@ -77,15 +74,31 @@
                             }
                             echo "<br>Record created successfully";
                         }
+
+
                         // READ
-                        echo '<br>READ<br>';
+                        echo '<br>// READ<br>';
 
-                        $sql = "SELECT * FROM users_1;";
-                        $result = $conn->exec( $sql );
-
+                        $result = $conn->query( "SELECT * FROM users_1" );
+                        
+                        echo '<br>// Fetch PDO data with associative array<br>';
                         while( $row = $result->fetch( PDO::FETCH_ASSOC ) ){
                             printf("ROW = %s<br>", print_r($row) );
+                            foreach( $row as $data ){
+                                printf("DATA = %s<br>", $data);
+                            }
                         }
+                        
+                        foreach( $conn->query('SELECT * FROM users_1') as $row) {
+                            echo $row['first'].' '.$row['password'];
+                        }
+
+                        // READ
+                        echo '<br>// READ<br>';
+
+                        $result = $conn->query( "SELECT * FROM users_1" );
+                                               
+
 
                     }
                     catch( PDOException $error ){
@@ -95,9 +108,7 @@
                                   
                 ?>
             </div>
-            
         </div>
-        
     </div> <!-- END container -->
 </body>
 </html>
