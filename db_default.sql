@@ -10,7 +10,7 @@ CREATE TABLE users_1(
 	first VARCHAR(100),
 	last VARCHAR(100),
 	uid VARCHAR(100),
-	age INT(3),
+	age VARCHAR(100),
 	PRIMARY KEY(id)
 );
 
@@ -19,7 +19,7 @@ CREATE TABLE users_2(
 	first VARCHAR(100),
 	last VARCHAR(100),
 	uid VARCHAR(100),
-	age INT(3),
+	age VARCHAR(100),
 	PRIMARY KEY(id)
 );
 

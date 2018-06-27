@@ -17,17 +17,18 @@
         <div id="content">
             <div id="content_1">
                 <h1>PDO | Restful API</h1>
+                <h5>(Under construction...)</h5>
                 <form action="index.php" method="POST" id="form_login">
                     <h5>Enter user name, create, read, update, or delete existing account</h5><br>
                     User Name<br><input type="text" name="uid" value="first" placeholder="User Name" class="input-box"><br>
-                    First<br><input type="text" name="first" value="First" placeholder="First Name" class="input-box"><br>
-                    Last<br><input type="text" name="last" value="Last" placeholder="Last Name" class="input-box"><br>
+                    First Name<br><input type="text" name="first" value="First" placeholder="First Name" class="input-box"><br>
+                    Last Name<br><input type="text" name="last" value="Last" placeholder="Last Name" class="input-box"><br>
                     Age<br><input type="text" name="age" value="0" placeholder="Age" class="input-box"><br><br><br>
                     <button type="submit" name="Create" class="main-button">Create</button>
                     <button type="submit" name="Read" class="main-button">Read</button>
                     <button type="submit" name="Update" class="main-button">Update</button>
-                    <button type="submit" name="Delete" class="main-button">Delete</button>
-                    <br><br>Clear to default users<br>
+                    <button type="submit" name="Delete" class="main-button">Delete</button><br><br>
+                    Clear to default users<br>
                     <button type="submit" name="Reset" class="main-button">Reset</button>
                 </form><br>
             </div>	
@@ -83,14 +84,17 @@
 
                             $sql = "INSERT INTO users_1 (first, last, uid, age) 
                                 VALUES ('$first', '$last', '$uid', $age);";
-                            
-                            if( $conn->exec( $sql ) ){
-                                foreach( $_POST as $post ){
-                                    echo 'POST = '.$post.'<br>';
-                                }
-                                echo "<br>//Record created successfully<br>";
 
+                            if( $conn->exec( $sql ) ){
+                                echo "<br>//Record created successfully<br>";
                             }
+
+                            echo "<br>// Print updated results<br<br><br>";
+                            $result = $conn->query( "SELECT * FROM users_1" );
+                            while( $row = $result->fetch( PDO::FETCH_ASSOC ) ){
+                                echo print_r($row).'<br>';
+                            }
+
                         }
 
                         // READ
@@ -110,9 +114,14 @@
 
                             echo "<br>// UPDATE<br>";
 
-                            $query =  "UPDATE users_1 SET age=".$_POST['age']." WHERE uid='".$_POST['uid']."'";
-                            echo "QUERY = $query<br>";
-                            $result = $conn->query( $query );
+                            foreach ( $_POST as $key => $value ){
+                                if( $value ){
+                                    $query =  "UPDATE users_1 SET ".$key."='".$value."' WHERE uid='".$_POST['uid']."'";
+                                    echo "QUERY = $query<br>";
+                                    $result = $conn->query( $query );
+                                }
+                            }
+
                             
                             echo "<br>// Print updated results<br<br><br>";
                             $result = $conn->query( "SELECT * FROM users_1" );

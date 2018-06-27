@@ -38,7 +38,7 @@ a{ cursor: pointer; text-decoration: none; }
         color: gray;
         background: url("assets/images/apple_mouse.jpg") no-repeat fixed;
         background-size: cover;
-        animation: 4s fadein;
+        animation: 2s fadein;
         transition: color 1s;
 }
 #content:hover{
