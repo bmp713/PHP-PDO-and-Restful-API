@@ -5,7 +5,7 @@ a{ cursor: pointer; text-decoration: none; }
     position: relative;  
     margin: auto;
     height: 100%;
-    width: 80%;
+    width: 100%;
 }
 #navbar{
 	position: relative;
@@ -46,7 +46,7 @@ a{ cursor: pointer; text-decoration: none; }
         color: white;
 }
 	#content_1{
-        animation: fadein 5s;    
+        animation: fadein 2s;    
         position: relative;
         padding: 50px;
         margin: auto;
@@ -97,7 +97,7 @@ a{ cursor: pointer; text-decoration: none; }
         width: 70%;
         color: lightgray;
         text-align: left;
-        font: 12px Courier, Arial;
+        font: 14px Courier, Arial;
         background: rgba(50, 25, 25, 0.6);
         transition: color 2s, background 1s;
     }

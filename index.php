@@ -54,7 +54,7 @@
                         if( file_exists( $db_file ) ){
                             $sql = file( $db_file );
                             foreach( $sql as $line ){
-                                //echo $line.'<br>';
+                                echo $line.'<br>';
                             }
                             $cmd = 'mysql -u'.$username.' -p'.$password.' <'.$db_file;
                             echo $cmd.'<br>';
@@ -77,6 +77,9 @@
             
                         printf("<br><br>%s logged in with %s<br>", $username, $password);
 
+                        $json_array =[];
+                        $json_i = 0;
+
                         // CREATE
                         if( isset($_POST['Create']) ){
 
@@ -92,9 +95,12 @@
                             echo "<br>// Print updated results<br<br><br>";
                             $result = $conn->query( "SELECT * FROM users_1" );
                             while( $row = $result->fetch( PDO::FETCH_ASSOC ) ){
-                                echo print_r($row).'<br>';
+                                $json_i++;
+                                //echo print_r($row).'<br>';
+                                $json_array[$json_i] = $row;    
                             }
-
+                            echo '<br><br>JSON Object = '.json_encode( $json_array );
+                            $json_i = 0;
                         }
 
                         // READ
@@ -105,8 +111,12 @@
                             // Fetch PDO data with associative array
                             $result = $conn->query( "SELECT * FROM users_1" );
                             while( $row = $result->fetch( PDO::FETCH_ASSOC ) ){
-                                echo print_r($row).'<br>';
+                                $json_i++;
+                                //echo print_r($row).'<br>';
+                                $json_array[$json_i] = $row;    
                             }
+                            echo '<br><br>JSON Object = '.json_encode( $json_array );
+                            $json_i = 0;
                         }
 
                         // UPDATE
@@ -126,8 +136,12 @@
                             echo "<br>// Print updated results<br<br><br>";
                             $result = $conn->query( "SELECT * FROM users_1" );
                             while( $row = $result->fetch( PDO::FETCH_ASSOC ) ){
-                                echo print_r($row).'<br>';
+                                $json_i++;
+                                //echo print_r($row).'<br>';
+                                $json_array[$json_i] = $row;    
                             }
+                            echo '<br><br>JSON Object = '.json_encode( $json_array );
+                            $json_i = 0;
                         }
 
                         // DELETE
@@ -144,8 +158,12 @@
                             echo "<br>// Print updated results<br<br><br>";
                             $result = $conn->query( "SELECT * FROM users_1" );
                             while( $row = $result->fetch( PDO::FETCH_ASSOC ) ){
-                                echo print_r($row).'<br>';
+                                $json_i++;
+                                //echo print_r($row).'<br>';
+                                $json_array[$json_i] = $row;    
                             }
+                            echo '<br><br>JSON Object = '.json_encode( $json_array );
+                            $json_i = 0;
                         }
 
                     }
