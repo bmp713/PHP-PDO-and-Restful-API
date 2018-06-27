@@ -16,17 +16,21 @@
 
         <div id="content">
             <div id="content_1">
-                <h1>PHP | PDO and Restful API</h1><br>
-                <h3>Log in to database</h3><br><br>
+                <h1>PHP | PDO Restful API</h1>
+                <h2>Useful MySQL Queries</h2><br><br>
+                <h3>Log in to database</h3><br>
                 <form action="index.php" method="POST" id="form_login">
                     User<br><input type="text" name="user" value="root" class="input-box"><br>
-                    Password<br><input type="password" name="password" value="Welcome123" class="input-box"><br><br>
-                    First<br><input type="text" name="first" value="First" class="input-box"><br>
-                    Last<br><input type="text" name="last" value="Last" class="input-box"><br>
-                    User Name<br><input type="text" name="uid" value="User" class="input-box"><br>
-                    Age<br><input type="text" name="age" value="35" class="input-box"><br><br>
-                    <button type="submit" class="main-button">Log In</button>
-   				</form><br>
+                    Password<br><input type="password" name="password" value="Welcome123" class="input-box"><br><br><br>
+
+                    <h3>Enter user name,<br> 
+                        create new or update existing</h3><br>
+                    User Name<br><input type="text" name="uid" value="first" placeholder="User Name" class="input-box"><br>
+                    First<br><input type="text" name="first" value="First" placeholder="First Name" class="input-box"><br>
+                    Last<br><input type="text" name="last" value="Last" placeholder="Last Name" class="input-box"><br>
+                    Age<br><input type="text" name="age" value="0" placeholder="Age" class="input-box"><br><br>
+                    <button type="submit" class="main-button">Update</button>
+                </form><br>
             </div>	
             <div id="output">
                 <?php
@@ -42,9 +46,6 @@
                     $uid = $_POST['uid'];
                     $age = $_POST['age'];
 
-                    foreach( $_POST as $post ){
-                        echo 'POST = '.$post.'<br>';
-                    }
                     // Create database from SQL file
                     if( file_exists( $db_file ) ){
                         $sql = file( $db_file );
@@ -56,15 +57,27 @@
                         echo exec( $cmd );
                     }
 
+                    echo "<br>// Display POST data<br>";
+                    foreach( $_POST as $post ){
+                        echo 'POST = '.$post.'<br>';
+                    }
+
+
+                    
                     // CONNECTION
                     try{ 
+                        echo "// Restful API CRUD operations with PDO<br><br>";
+
                         $conn = new PDO('mysql:host='.$host.';dbname='.$db_name, $username, $password);
-                        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                         $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-                      
+                        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
                         printf("<br><br>%s logged in with %s<br>", $username, $password);
-                                    
+                                 
+                        
                         // CREATE
+                        echo "<br>// CREATE<br>";
+
                         $sql = "INSERT INTO users_1 (first, last, uid, age) 
                             VALUES ('$first', '$last', '$uid', $age);";
                         
@@ -72,33 +85,47 @@
                             foreach( $_POST as $post ){
                                 echo 'POST = '.$post.'<br>';
                             }
-                            echo "<br>Record created successfully";
+                            echo "<br>//Record created successfully<br>";
+
                         }
 
 
                         // READ
                         echo '<br>// READ<br>';
-
-                        $result = $conn->query( "SELECT * FROM users_1" );
                         
-                        echo '<br>// Fetch PDO data with associative array<br>';
+                        // Fetch PDO data with associative array
+                        $result = $conn->query( "SELECT * FROM users_1" );
                         while( $row = $result->fetch( PDO::FETCH_ASSOC ) ){
-                            printf("ROW = %s<br>", print_r($row) );
-                            foreach( $row as $data ){
-                                printf("DATA = %s<br>", $data);
-                            }
+                            echo print_r($row).'<br>';
                         }
+
+
+                        // UPDATE
+                        echo "<br>// UPDATE<br>";
+
+                        $query =  "UPDATE users_1 SET age=".$_POST['age']." WHERE uid='".$_POST['uid']."'";
+                        echo "QUERY = $query<br>";
+                        $result = $conn->query( $query );
                         
-                        foreach( $conn->query('SELECT * FROM users_1') as $row) {
-                            echo $row['first'].' '.$row['password'];
+                        echo "<br>// Print updated results<br<br><br><br>";
+                        $result = $conn->query( "SELECT * FROM users_1" );
+                        while( $row = $result->fetch( PDO::FETCH_ASSOC ) ){
+                            echo print_r($row).'<br>';
                         }
 
-                        // READ
-                        echo '<br>// READ<br>';
 
+                        // DELETE
+                        echo "<br>// DELETE<br>";
+
+                        $query =  "DELETE FROM users_1 WHERE uid='".$_POST['uid']."'"; 
+                        echo "QUERY = $query<br>";
+                        $result = $conn->query( $query );
+                        
+                        echo "<br>// Print updated results<br<br><br><br>";
                         $result = $conn->query( "SELECT * FROM users_1" );
-                                               
-
+                        while( $row = $result->fetch( PDO::FETCH_ASSOC ) ){
+                            echo print_r($row).'<br>';
+                        }
 
                     }
                     catch( PDOException $error ){
